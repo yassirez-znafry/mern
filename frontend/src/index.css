@@ -57,7 +57,8 @@ h4{
 	font-weight: 700;
 }
 
-	/*default is hide music player*/
+
+		/*default is hide music player*/
     #aplayer{
       position: fixed;
       bottom: -100%;
