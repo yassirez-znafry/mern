@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+
 import { Row, Col } from 'react-bootstrap'
 import Playlist from '../components/Playlist'
-import playlists from '../Playlists'
-
+import axios from 'axios'
 
 
 const HomeScreen = () => {
+
+    const [playlists, setplaylist] = useState([])
+    useEffect(() => {
+        const fetchPlaylists = async () => {
+            const {data} = await axios.get('/api/playlists')
+            setplaylist(data)
+        }
+
+        fetchPlaylists()
+    }, [])
   
     return (
 
