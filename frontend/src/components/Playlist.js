@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 const Playlist = ({playlist}) => {
     return (
        <>
-            <Link to= {`/playlist/${playlist.id}`} className="album-poster" dataSwitch="0">
+            <Link to= {`/playlist/${playlist._id}`} className="album-poster" dataSwitch="0">
                             <img src={playlist.image} alt=""></img>
                     
             </Link>

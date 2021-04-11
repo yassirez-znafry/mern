@@ -2,24 +2,21 @@ import express from 'express'
 import playlists from './data/Playlists.js'
 import songs from './data/Songs.js'
 import dotenv from 'dotenv'
+import connectDB from './config/db.js'
+import playlistRoutes from './routes/PlaylistRoutes.js'
+import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 dotenv.config()
-
+connectDB()
 
 const app = express()
 
 app.get('/', (req, res) => {
-    res.send('API is running...')
+    res.send('API is running......')
 })
 
-app.get('/api/playlists', (req, res) => {
-    res.json(playlists)
-})
 
-app.get('/api/playlists/:id', (req, res) => {
-    const playlist = playlists.find((p)=>p.id === req.params.id)
-    res.json(playlist)
-})
+app.use('/api/playlists', playlistRoutes)
 
 app.get('/api/playlists/:id/songs', (req, res) => {
     const playlist = playlists.find((p)=>p.id === req.params.id)
@@ -29,3 +26,7 @@ app.get('/api/playlists/:id/songs', (req, res) => {
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, console.log('server is running on port: ' + PORT))
+
+
+app.use(notFound)
+app.use(errorHandler)
