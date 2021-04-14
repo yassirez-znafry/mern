@@ -16,6 +16,8 @@ const HomeScreen = () => {
 
         fetchPlaylists()
     }, [])
+
+    console.log(playlists)
   
     return (
 

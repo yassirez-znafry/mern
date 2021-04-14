@@ -6,22 +6,25 @@ import axios from 'axios'
 
 const PlaylistScreen = ({match}) => {
 
+    /*
     // getting all playlists from the backend
     const [playlist, setplaylist] = useState([])
     useEffect(() => {
         const fetchPlaylist = async () => {
             const {data} = await axios.get('/api/playlists/'+match.params.id)
             setplaylist(data)
+            songList.push(data.songs)
         }
 
         fetchPlaylist()
     }, [match])
 
+    console.log(playlist)
+
+
+  */
 // search for the playlist from the id in url
-
-
-
-// search for the playlist's songs
+var i =0;
 const [songList, setSongList] = useState([])
     useEffect(() => {
         const fetchPlaylist = async () => {
@@ -30,12 +33,21 @@ const [songList, setSongList] = useState([])
         }
 
         fetchPlaylist()
-    }, [])
+    }, [match])
 
+const songAplayer=[];
+    for (let index = 0; index < songList.length; index++) {
+        const element = songList[index];  
+        songAplayer.push(element[0])
 
+    }
 
-console.log(songList)
+    console.log(songAplayer)
+    console.log(songList)
+    
+    
 
+// search for the playlist's songs
 
 
 function handleClick(num){
@@ -44,13 +56,15 @@ function handleClick(num){
 		
 		    container: document.getElementById('aplayer'),
 		    listFolded: true,
-		    audio: songList
+		    audio: songAplayer
 		});
 
 	
 			var dataSwitchId = num;
+            console.log(num)
 			
 			ap.list.switch(num); 
+         
 			ap.play();
 
 			$("#aplayer").addClass('showPlayer');
@@ -73,13 +87,23 @@ function handleClick(num){
 			        </div>
 
 				
+                {songList.map((song, index) => (
+       
+                                <div className="col-md-3">
+                        <a  onClick={() => handleClick(index)}  className="album-poster" >
+                            <img src={song[0].cover} alt=""></img>
+                        </a>
+                        <h4>{song[0].name}</h4>
+				        <p>{song[0].describtion}</p>
+                    </div>
+                    ))}
 
                     <div className="col-md-3">
-                        <a  onClick={() => handleClick(0)} className="album-poster" >
+                        <a  onClick={(i) => handleClick()} className="album-poster" >
                             <img src="https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""></img>
                         </a>
-                        <h4>{playlist.name}</h4>
-				        <p>{playlist.describtion}</p>
+                        <h4>sdlkcjlk</h4>
+				        <p>sñldcñl</p>
                     </div>
                        
                 </div>
