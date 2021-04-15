@@ -2,25 +2,28 @@ import React, { useState, useEffect } from 'react'
 import $ from 'jquery'
 import APlayer from 'aplayer'
 import axios from 'axios'
+import {listPlaylistSongs} from '../actions/playlistsActions'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 const PlaylistScreen = ({match}) => {
 
 
+const dispatch = useDispatch()
+
+    const playlistSongsList = useSelector((state) => state.playlistSongsList)
+    const { loading, error, songs } = playlistSongsList
+
+    useEffect(() => {
+        dispatch(listPlaylistSongs(match.params.id))
+    }, [dispatch])
 
 
+console.log(songs)
 
     
 var i =0;
-const [songList, setSongList] = useState([])
-useEffect(() => {
-    const fetchPlaylist = async () => {
-        const {data} = await axios.get('/api/playlists/'+match.params.id+'/songs')
-        setSongList(data)
-    }
-
-    fetchPlaylist()
-    }, [match])
+const songList = songs
 
 const songAplayer=[];
     for (let index = 0; index < songList.length; index++) {
