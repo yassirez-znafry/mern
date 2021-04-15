@@ -6,33 +6,20 @@ import axios from 'axios'
 
 const PlaylistScreen = ({match}) => {
 
-    /*
-    // getting all playlists from the backend
-    const [playlist, setplaylist] = useState([])
-    useEffect(() => {
-        const fetchPlaylist = async () => {
-            const {data} = await axios.get('/api/playlists/'+match.params.id)
-            setplaylist(data)
-            songList.push(data.songs)
-        }
-
-        fetchPlaylist()
-    }, [match])
-
-    console.log(playlist)
 
 
-  */
-// search for the playlist from the id in url
+
+
+    
 var i =0;
 const [songList, setSongList] = useState([])
-    useEffect(() => {
-        const fetchPlaylist = async () => {
-            const {data} = await axios.get('/api/playlists/'+match.params.id+'/songs')
-            setSongList(data)
-        }
+useEffect(() => {
+    const fetchPlaylist = async () => {
+        const {data} = await axios.get('/api/playlists/'+match.params.id+'/songs')
+        setSongList(data)
+    }
 
-        fetchPlaylist()
+    fetchPlaylist()
     }, [match])
 
 const songAplayer=[];
@@ -47,27 +34,22 @@ const songAplayer=[];
     
     
 
-// search for the playlist's songs
-
-
 function handleClick(num){
 
 	const ap = new APlayer({
 		
-		    container: document.getElementById('aplayer'),
-		    listFolded: true,
-		    audio: songAplayer
-		});
+	    container: document.getElementById('aplayer'),
+	    listFolded: true,
+	    audio: songAplayer
+	});
 
-	
-			var dataSwitchId = num;
-            console.log(num)
+    console.log(num)
 			
-			ap.list.switch(num); 
+	ap.list.switch(num); 
          
-			ap.play();
+	ap.play();
 
-			$("#aplayer").addClass('showPlayer');
+	$("#aplayer").addClass('showPlayer');
 		
 }
   

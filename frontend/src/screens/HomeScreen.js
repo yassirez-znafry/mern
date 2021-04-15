@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react'
-
+import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col } from 'react-bootstrap'
 import Playlist from '../components/Playlist'
 import axios from 'axios'
+import {listPlaylists} from '../actions/playlistsActions'
 
 
 const HomeScreen = () => {
 
-    const [playlists, setplaylist] = useState([])
-    useEffect(() => {
-        const fetchPlaylists = async () => {
-            const {data} = await axios.get('/api/playlists')
-            setplaylist(data)
-        }
+    const dispatch = useDispatch()
 
-        fetchPlaylists()
-    }, [])
+    const playlistList = useSelector((state) => state.playlistList)
+    const { loading, error, playlists } = playlistList
+
+    useEffect(() => {
+        dispatch(listPlaylists())
+    }, [dispatch])
+
+    
 
     console.log(playlists)
   
