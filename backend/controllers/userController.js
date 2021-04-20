@@ -105,7 +105,7 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
   
   const playlist = await Playlist.find({ "user": user._id });
   
-console.log(playlist)
+console.log( "hhhhhh" + playlist)
 
 res.json(playlist)
 

@@ -14,6 +14,9 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_RESET,
+  USER_PLAYLISTS_REQUEST,
+  USER_PLAYLISTS_SUCCESS,
+  USER_PLAYLISTS_FAIL,
 } from '../constants/userConstants.js'
 
 export const userLoginReducer = (state = { }, action) => {
@@ -79,6 +82,25 @@ export const userUpdateProfileReducer = (state = {}, action) => {
       return { loading: false, error: action.payload }
     case USER_UPDATE_PROFILE_RESET:
       return {}
+    default:
+      return state
+  }
+}
+
+
+
+
+export const userPlaylistsReducer = (state = { playlists: [] }, action) => {
+  switch (action.type) {
+    case USER_PLAYLISTS_REQUEST:
+      return { loading: true, playlists: [] }
+    case USER_PLAYLISTS_SUCCESS:
+      return {
+        loading: false,
+        playlists: action.payload,
+      }
+    case USER_PLAYLISTS_FAIL:
+      return { loading: false, error: action.payload }
     default:
       return state
   }

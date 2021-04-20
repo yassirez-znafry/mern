@@ -15,6 +15,9 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_RESET,
+  USER_PLAYLISTS_REQUEST,
+  USER_PLAYLISTS_SUCCESS,
+  USER_PLAYLISTS_FAIL,
 } from '../constants/userConstants.js'
 
 export const login = (email, password) => async (dispatch) => {
@@ -184,3 +187,46 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     })
   }
 }
+
+
+
+
+export const getUserPlaylists = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_PLAYLISTS_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.get(`/api/users/playlists`, config)
+    
+
+     dispatch({
+      type: USER_PLAYLISTS_SUCCESS,
+      payload: data,
+    })
+    //localStorage.setItem('userInfo', JSON.stringify(data))
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: USER_PLAYLISTS_FAIL,
+      payload: message,
+    })
+  }
+}
+
