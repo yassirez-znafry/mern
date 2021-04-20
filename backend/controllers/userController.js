@@ -1,4 +1,4 @@
-
+import Playlist from '../models/playlistModel.js'
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
@@ -99,6 +99,20 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 })
 
 
+const getUserPlaylists = asyncHandler(async (req, res) => {
+  
+  const user = await User.findById(req.user._id)
+  
+  const playlist = await Playlist.find({ "user": user._id });
+  
+console.log(playlist)
+
+res.json(playlist)
+
+})
 
 
-export {authUser, getUserProfile, registerUser, updateUserProfile}
+
+
+
+export {authUser, getUserProfile, registerUser, updateUserProfile, getUserPlaylists}
