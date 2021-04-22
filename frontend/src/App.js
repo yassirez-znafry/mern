@@ -9,6 +9,7 @@ import LoginScreen from './screens/loginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import UserPlaylistsScreen from './screens/UserPlaylistsScreen';
+import UploadPlaylistScreen from './screens/UploadPlaylist';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path='/register' component={RegisterScreen} exact />
           <Route path='/playlist/:id' component={PlaylistScreen} />
           <Route path='/user/playlists' component={UserPlaylistsScreen} />
+          <Route path='/user/upload/playlist' component={UploadPlaylistScreen} />
 
       </Container>
     </main>

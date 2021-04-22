@@ -3,6 +3,7 @@ import express from 'express'
 import multer from 'multer'
 const router = express.Router()
 
+var songname;
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, 'backend/public/')
@@ -10,7 +11,7 @@ const storage = multer.diskStorage({
   filename(req, file, cb) {
     cb(
       null,
-      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+      songname=`${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
     )
   },
 })
@@ -20,6 +21,6 @@ const upload = multer({
 })
 
 router.post('/', upload.single('song'), (req, res) => {
-  res.send(`/${req.file.path}`)
+  res.send(`${songname}`)
 })
 export default router
