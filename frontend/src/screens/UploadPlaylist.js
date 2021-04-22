@@ -9,14 +9,12 @@ import FormContainer from '../components/FormContainer'
 
 
 const UploadPlaylistScreen = ({ match, history }) => {
-  const productId = match.params.id
+
+  
   const [nbrSongs, setNbrSongs] = useState(0)
   const [name, setName] = useState('')
-  const [price, setPrice] = useState(0)
   const [image, setImage] = useState('')
-  const [brand, setBrand] = useState('')
-  const [category, setCategory] = useState('')
-  const [countInStock, setCountInStock] = useState(0)
+  const [listSongs, setListSongs] = useState([])
   const [description, setDescription] = useState('')
   const [uploading, setUploading] = useState(false)
 
@@ -24,27 +22,109 @@ const UploadPlaylistScreen = ({ match, history }) => {
 
   const loading=false
   const error = false
-  const uploadFileHandler = ()=>{};
-  const submitHandler = ()=>{};
+
+  const uploadFileHandlerImage = async(e)=>{
+    const file = e.target.files[0]
+    console.log(file)
+    const formData = new FormData()
+    formData.append('song', file)
+
+     try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+
+      const { data } = await axios.post('/api/upload', formData, config)
+
+      setImage(data)
+      console.log(data)
+      
+    } catch (error) {
+      console.error(error)
+      
+    }
+  };
+
+
+  const uploadFileHandlerSong = async(e)=>{
+    const file1 = e.target.files[0]
+    const file2 = e.target.files[1]
+    console.log(file1)
+    console.log(file2)
+    const formData = new FormData()
+    formData.append('song', file1)
+
+     try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+
+      const { data } = await axios.post('/api/upload', formData, config)
+
+      setListSongs([...listSongs, data])
+      console.log(data)
+      console.log(listSongs)
+      
+      
+    } catch (error) {
+      console.error(error)
+      
+    }
+  };
+
+
+  const submitHandler = async(e)=>{
+    e.preventDefault()
+    console.log(listSongs)
+    const playlistEx = {
+      name: name,
+      cover: image,
+      describtion: description,
+      songs: listSongs,
+      nbrPlays: 0
+    }
+
+     var userInfo =JSON.parse( localStorage.getItem('userInfo'));
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+
+      const { data } = await axios.post('/api/playlists/upload', playlistEx, config)
+      
+    } catch (error) {
+      console.error(error)
+      
+    }
+
+};
   
   
 
 const songs=[]
 
 for (var i = 0; i < nbrSongs; i += 1) {
-      songs.push(<Form.Group controlId='song'>
+      songs.push(<Form.Group key={i} controlId='song'>
               <Form.Label>Song number {i+1}</Form.Label>
               <Form.Control
                 type='text'
                 placeholder='Enter the song'
-                value={image}
+                value={listSongs[i]}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
               <Form.File
                 id='song-file'
                 label='Choose File'
                 custom
-                onChange={uploadFileHandler}
+                onChange={uploadFileHandlerSong}
               ></Form.File>
               {uploading && <Loader />}
             </Form.Group>);
@@ -103,7 +183,7 @@ setNbrSongs(nbrSongs+1)
                 id='image-file'
                 label='Choose File'
                 custom
-                onChange={uploadFileHandler}
+                onChange={uploadFileHandlerImage}
               ></Form.File>
               {uploading && <Loader />}
             </Form.Group>
@@ -118,7 +198,7 @@ setNbrSongs(nbrSongs+1)
             <Button  style={{marginRight: 310}} onClick={addSong} variant='primary'>
               Add Song
             </Button>
-            <Button type='submit' variant='primary'>
+            <Button type='submit' variant='primary' onClick={submitHandler}>
               Submit
             </Button>
           </Form>

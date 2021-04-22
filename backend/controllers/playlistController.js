@@ -49,4 +49,23 @@ const getSongsByPlaylist = asyncHandler(async (req, res) => {
   }
 })
 
-export {getPlaylists, getPlaylistById, getSongsByPlaylist}
+
+// @desc    Create a playlist
+// @route   POST /api/products
+// @access  Private/Admin
+const createPlaylist = asyncHandler(async (req, res) => {
+
+    console.log(req.body)
+    console.log(req.user._id)
+  const user = await User.findById(req.user._id)
+    const{name, cover, songs, nbrPlays, describtion} = req.body
+   
+  const nb = req.user._id
+songz=["60729f0d09360a16f0eb52b9"]
+  const createdPlaylist = await Playlist.create({name, cover, songz, nb, nbrPlays, describtion})
+  
+  res.status(201).json(createdPlaylist)
+})
+
+
+export {getPlaylists, getPlaylistById, getSongsByPlaylist, createPlaylist}

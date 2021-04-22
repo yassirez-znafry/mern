@@ -37,7 +37,7 @@ const HomeScreen = () => {
                         </div>
                     ))}
                     <div className="col-md-3">
-                        <a href="/register" className="album-poster" dataSwitch="0">
+                        <a href="/user/upload/playlist" className="album-poster" dataSwitch="0">
                             <img src="/playlists-images/plus.jpg" alt=""></img>
                         </a>
                         <h4>SHARE WITH US YOUR PLAYLISTS</h4>
