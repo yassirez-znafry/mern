@@ -2,6 +2,8 @@ import express from 'express'
 import asyncHandler from 'express-async-handler'
 import Playlist from '../models/playlistModel.js'
 import Song from '../models/songModel.js'
+import User from '../models/userModel.js'
+
 
 
 // @desc    Fetch all playlists
@@ -57,12 +59,26 @@ const createPlaylist = asyncHandler(async (req, res) => {
 
     console.log(req.body)
     console.log(req.user._id)
-  const user = await User.findById(req.user._id)
-    const{name, cover, songs, nbrPlays, describtion} = req.body
+  const userx = await User.findById(req.user._id)
+  const{name, cover, songs, nbrPlays, describtion} = req.body
+
+  var asdkj ;
+  asdkj.push(req.body.songs[0].data)
+ console.log(asdkj)
+  console.log(req.body.songs)
+
+  const playlist = new Playlist({
+    name: req.body.name,
+    cover: req.body.cover,
+    songs: req.body.songs,
+    nbrPlays: 0,
+    describtion: req.body.describtion,
+    user: userx,
+  })
+
+  console.log(playlist)
    
-  const nb = req.user._id
-songz=["60729f0d09360a16f0eb52b9"]
-  const createdPlaylist = await Playlist.create({name, cover, songz, nb, nbrPlays, describtion})
+  const createdPlaylist = await Playlist.create(playlist)
   
   res.status(201).json(createdPlaylist)
 })

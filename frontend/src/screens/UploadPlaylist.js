@@ -19,7 +19,7 @@ const UploadPlaylistScreen = ({ match, history }) => {
   const [uploading, setUploading] = useState(false)
 
   
-
+  const tajriba =[]
   const loading=false
   const error = false
 
@@ -64,7 +64,7 @@ const UploadPlaylistScreen = ({ match, history }) => {
       }
 
       const { data } = await axios.post('/api/upload', formData, config)
-
+      
       setListSongs([...listSongs, data])
       console.log(data)
       console.log(listSongs)
@@ -84,7 +84,7 @@ const UploadPlaylistScreen = ({ match, history }) => {
       name: name,
       cover: image,
       describtion: description,
-      songs: listSongs,
+      songs: listSongs ,
       nbrPlays: 0
     }
 
@@ -118,7 +118,7 @@ for (var i = 0; i < nbrSongs; i += 1) {
                 type='text'
                 placeholder='Enter the song'
                 value={listSongs[i]}
-                onChange={(e) => setImage(e.target.value)}
+                
               ></Form.Control>
               <Form.File
                 id='song-file'

@@ -8,6 +8,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import userRoutes from './routes/userRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 import path from 'path'
+import bodyParser from 'body-parser'
 
 
 
@@ -16,6 +17,7 @@ connectDB()
 
 const app = express()
 app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.send('API is running......')
