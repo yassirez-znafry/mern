@@ -1,16 +1,15 @@
 import path from 'path'
 import express from 'express'
 import multer from 'multer'
-import { saveSong } from '../controllers/uploadController.js';
-import { saveImage } from '../controllers/uploadController.js';
+import asyncHandler from 'express-async-handler'
+
 const router = express.Router()
 
+const saveSong = asyncHandler(async (req, res) => {
 
 
-
-// upload song
 var songName;
-const songStorage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, 'backend/public/songs/')
   },
@@ -21,18 +20,21 @@ const songStorage = multer.diskStorage({
     )
   },
 })
-const uploadSong = multer({
-  storage: songStorage
+
+const upload = multer({
+  storage
 })
-router.post('/song/', uploadSong.single('song'), (req, res) => {
+
+router.post('/song/', upload.single('song'), (req, res) => {
   res.send(`${songName}`)
 })
+   
+})
 
 
-
-// upload Image
+const saveImage = asyncHandler(async (req, res) => {
 var imageName;
-const imageStorage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, 'backend/public/images/')
   },
@@ -44,18 +46,18 @@ const imageStorage = multer.diskStorage({
   },
 })
 
-const uploadImage = multer({
-  storage: imageStorage
+const upload = multer({
+  storage
 })
 
-router.post('/image/', uploadImage.single('image'), (req, res) => {
-  res.send(`${imageName}`)
+module.exports.send = (req, res) => {
+  upload.single('image');
+  res.send(imageName);
+}
+
+   
 })
 
 
 
-
-
-
-
-export default router
+export {saveSong, saveImage}

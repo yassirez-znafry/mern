@@ -56,28 +56,36 @@ const getSongsByPlaylist = asyncHandler(async (req, res) => {
 // @route   POST /api/products
 // @access  Private/Admin
 const createPlaylist = asyncHandler(async (req, res) => {
+    
+  const user = await User.findById(req.user._id)
+  
 
-    console.log(req.body)
-    console.log(req.user._id)
-  const userx = await User.findById(req.user._id)
-  const{name, cover, songs, nbrPlays, describtion} = req.body
+  const songos = []
+  var fresong = req.body.songs
+  for (let index = 0; index < Object.values(fresong).length; index++) {
+    const element = new Song({
+      name: JSON.stringify(Object.values(fresong)[index]),
+      cover: "kjd",
+      describtion: "ldkl",
+      artist: "sjndj",
+      url: "kjfkj"
+    })
+    await Song.create(element)
+    songos.push(element)
+  }
+  
 
-  var asdkj ;
-  asdkj.push(req.body.songs[0].data)
- console.log(asdkj)
-  console.log(req.body.songs)
-
+  
   const playlist = new Playlist({
     name: req.body.name,
     cover: req.body.cover,
-    songs: req.body.songs,
+    songs: songos,
     nbrPlays: 0,
     describtion: req.body.describtion,
-    user: userx,
+    user: user,
   })
 
-  console.log(playlist)
-   
+  
   const createdPlaylist = await Playlist.create(playlist)
   
   res.status(201).json(createdPlaylist)

@@ -14,18 +14,42 @@ const UploadPlaylistScreen = ({ match, history }) => {
   const [nbrSongs, setNbrSongs] = useState(0)
   const [name, setName] = useState('')
   const [image, setImage] = useState('')
+  const [coverSelected, setCoverSelected] = useState('')
   const [listSongs, setListSongs] = useState([])
+  const [songSelected, setSongSelected] = useState([])
   const [description, setDescription] = useState('')
   const [uploading, setUploading] = useState(false)
 
   
-  const tajriba =[]
-  const loading=false
+  
+  const loading = false
   const error = false
 
   const uploadFileHandlerImage = async(e)=>{
     const file = e.target.files[0]
-    console.log(file)
+    const formData = new FormData()
+    formData.append('image', file)
+
+     try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+
+      const { data } = await axios.post('/api/upload/image', formData, config)
+      setImage(data)
+      setCoverSelected(file.name)
+
+    } catch (error) {
+      console.error(error)
+    }
+  };
+
+
+  const uploadFileHandlerSong = async(e)=>{
+    const file = e.target.files[0]
+    console.log(file.name)
     const formData = new FormData()
     formData.append('song', file)
 
@@ -36,39 +60,9 @@ const UploadPlaylistScreen = ({ match, history }) => {
         },
       }
 
-      const { data } = await axios.post('/api/upload', formData, config)
-
-      setImage(data)
-      console.log(data)
-      
-    } catch (error) {
-      console.error(error)
-      
-    }
-  };
-
-
-  const uploadFileHandlerSong = async(e)=>{
-    const file1 = e.target.files[0]
-    const file2 = e.target.files[1]
-    console.log(file1)
-    console.log(file2)
-    const formData = new FormData()
-    formData.append('song', file1)
-
-     try {
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-
-      const { data } = await axios.post('/api/upload', formData, config)
-      
+      const { data } = await axios.post('/api/upload/song', formData, config) 
       setListSongs([...listSongs, data])
-      console.log(data)
-      console.log(listSongs)
-      
+      setSongSelected([...songSelected, file.name])
       
     } catch (error) {
       console.error(error)
@@ -88,7 +82,7 @@ const UploadPlaylistScreen = ({ match, history }) => {
       nbrPlays: 0
     }
 
-     var userInfo =JSON.parse( localStorage.getItem('userInfo'));
+     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
     try {
       const config = {
@@ -117,7 +111,7 @@ for (var i = 0; i < nbrSongs; i += 1) {
               <Form.Control
                 type='text'
                 placeholder='Enter the song'
-                value={listSongs[i]}
+                value={songSelected[i] || ''}
                 
               ></Form.Control>
               <Form.File
@@ -176,7 +170,7 @@ setNbrSongs(nbrSongs+1)
               <Form.Control
                 type='text'
                 placeholder='Enter playlist cover'
-                value={image}
+                value={coverSelected}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
               <Form.File
