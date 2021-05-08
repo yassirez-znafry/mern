@@ -64,11 +64,11 @@ const createPlaylist = asyncHandler(async (req, res) => {
   var fresong = req.body.songs
   for (let index = 0; index < Object.values(fresong).length; index++) {
     const element = new Song({
-      name: JSON.stringify(Object.values(fresong)[index]),
-      cover: "kjd",
+      name: (Object.values(fresong)[index]),
+      cover: "/playlists-images/dlit.jpg",
       describtion: "ldkl",
       artist: "sjndj",
-      url: "kjfkj"
+      url: "/songs/"+(Object.values(fresong)[index])
     })
     await Song.create(element)
     songos.push(element)
